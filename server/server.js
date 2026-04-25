@@ -20,6 +20,10 @@ const io = socketIO(server, {
 app.use(cors());
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.send("Backend is running 🚀");
+});
+
 // MongoDB Connection
 const mongoURL = process.env.MONGO_URL || 'mongodb://localhost:27017/collaborative-editor';
 mongoose.connect(mongoURL, {
