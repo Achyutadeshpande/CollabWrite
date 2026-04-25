@@ -1,0 +1,120 @@
+.whiteboard-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #f5f5f5;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.whiteboard-toolbar {
+  display: flex;
+  gap: 15px;
+  padding: 12px 15px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  align-items: center;
+  flex-wrap: wrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toolbar-group label {
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.color-picker {
+  width: 40px;
+  height: 36px;
+  border: 2px solid white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.color-picker:hover {
+  transform: scale(1.1);
+}
+
+.brush-slider {
+  width: 100px;
+  cursor: pointer;
+  accent-color: #667eea;
+}
+
+.brush-value {
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  min-width: 35px;
+  text-align: center;
+}
+
+.btn-clear,
+.btn-download {
+  padding: 8px 14px;
+  background: white;
+  color: #667eea;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-clear:hover,
+.btn-download:hover {
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-clear:active,
+.btn-download:active {
+  transform: translateY(0);
+}
+
+.whiteboard-canvas {
+  flex: 1;
+  background: white;
+  cursor: crosshair;
+  border: 1px solid #ddd;
+  display: block;
+}
+
+.whiteboard-canvas:active {
+  cursor: crosshair;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .whiteboard-toolbar {
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .toolbar-group {
+    gap: 6px;
+  }
+
+  .brush-slider {
+    width: 80px;
+  }
+
+  .btn-clear,
+  .btn-download {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+}
