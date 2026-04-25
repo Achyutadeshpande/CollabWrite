@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Editor.css';
 
-function Editor({ socket, roomId, username }) {
+function Editor({ socket, roomId, username, initialContent }) {
   const [content, setContent] = useState('');
   const [stats, setStats] = useState({ words: 0, characters: 0, lines: 0 });
   const [editingUsers, setEditingUsers] = useState(new Set());
@@ -42,6 +42,13 @@ function Editor({ socket, roomId, username }) {
       socket.off('editor-typing-indicator');
     };
   }, [socket, username]);
+
+  useEffect(() => {
+    if (initialContent) {
+      setContent(initialContent);
+      updateStats(initialContent);
+    }
+  }, [initialContent]);
 
   const updateStats = (text) => {
     const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;

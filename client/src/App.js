@@ -6,7 +6,7 @@ import Chat from './components/Chat';
 import Whiteboard from './components/Whiteboard';
 import './App.css';
 
-const SOCKET_SERVER_URL = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
+const BASE_URL = process.env.REACT_APP_SERVER_URL;
 
 function App() {
   const [roomId, setRoomId] = useState('');
@@ -15,6 +15,7 @@ function App() {
   const [userCount, setUserCount] = useState(0);
   const [copySuccess, setCopySuccess] = useState('');
   const [error, setError] = useState('');
+  const [remoteContent, setRemoteContent] = useState('');
   const socketRef = useRef(null);
   const [tempUsername, setTempUsername] = useState('');
   const [tempRoomId, setTempRoomId] = useState('');
@@ -22,7 +23,7 @@ function App() {
 
   useEffect(() => {
     // Initialize socket connection
-    socketRef.current = io(SOCKET_SERVER_URL, {
+    socketRef.current = io(BASE_URL, {
       reconnection: true,
       reconnectionDelay: 1000,
       reconnectionDelayMax: 5000,
@@ -65,7 +66,20 @@ function App() {
     setUsername(tempUsername);
     setRoomId(tempRoomId);
     setError('');
-    
+
+    if (BASE_URL) {
+      fetch(`${BASE_URL}/api/document/${tempRoomId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data && typeof data.content === 'string') {
+            setRemoteContent(data.content);
+          }
+        })
+        .catch((err) => {
+          console.error('Failed to load document:', err);
+        });
+    }
+
     socketRef.current.emit('join-room', {
       roomId: tempRoomId,
       username: tempUsername
@@ -105,6 +119,7 @@ function App() {
     setUserCount(0);
     setTempUsername('');
     setTempRoomId('');
+    setRemoteContent('');
     setError('');
   };
 
@@ -211,7 +226,7 @@ function App() {
       <div className="main-container">
         <div className="content-area">
           {activeTab === 'editor' && (
-            <Editor socket={socketRef.current} roomId={roomId} username={username} />
+            <Editor socket={socketRef.current} roomId={roomId} username={username} initialContent={remoteContent} />
           )}
           {activeTab === 'whiteboard' && (
             <Whiteboard socket={socketRef.current} roomId={roomId} username={username} />
